@@ -57,10 +57,10 @@ export default {
   },
   methods: {
     SignUp () {
-      this.$router.push({path: '/account/signup'})
+      this.$router.push({path: '/account/signin'})
     },
     SignIn () {
-      this.$router.push({path: '/account/signin'})
+      this.$router.push({path: '/account/signup'})
     }
   }
 }
