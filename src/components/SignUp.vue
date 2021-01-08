@@ -262,7 +262,7 @@ export default {
           param.append('uname', this.SigninForm.name)
           param.append('pwd', this.SigninForm.pwd)
           this.$axios
-            .post('http://127.0.0.1:8081/login', param)
+            .post(that.getApi('/login'), param)
             .then(function (response) {
               if (response === 'failed') {
                 that.$message({
@@ -305,7 +305,7 @@ export default {
           param.append('name', this.SignupForm.name2)
           param.append('phone', this.SignupForm.phone)
           this.$axios
-            .post('http://127.0.0.1:8081/register', param)
+            .post(that.getApi('/register'), param)
             .then(function (response) {
               if (response === 'failed') {
                 that.$message({

@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from '@/commn/axios'
 import { setCookie, getCookie, delCookie } from '@/commn/cookie'
 
+// 定义常量
+// api访问路径
+let BACK_URL = 'http://127.0.0.1:8081'
+
 Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
@@ -15,6 +19,14 @@ Vue.prototype.$cookieStore = {
   setCookie,
   getCookie,
   delCookie
+}
+Vue.prototype.getApi = function (url) {
+  let apiurl = BACK_URL
+  if (url.substr(0, 1) !== '/') {
+    apiurl += '/'
+  }
+  apiurl += url
+  return apiurl
 }
 
 router.beforeEach((to, from, next) => {

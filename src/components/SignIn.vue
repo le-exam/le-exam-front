@@ -262,7 +262,7 @@ export default {
           param.append('uname', this.SigninForm.name)
           param.append('pwd', this.SigninForm.pwd)
           this.$axios
-            .post('/login', param)
+            .post(that.getApi('/login'), param)
             .then(function (response) {
               if (response === 'failed') {
                 that.$message({
@@ -273,7 +273,7 @@ export default {
               } else if (response === 'success') {
                 // 登录成功
                 that.$cookieStore.setCookie('uname', that.SigninForm.name, 1)
-                that.$router.push('/tenant/dashboard')
+                that.$router.push('/tenant')
               } else {
                 that.$message({
                   message: '登录失败，未知错误。',
@@ -305,7 +305,7 @@ export default {
           param.append('name', this.SignupForm.name2)
           param.append('phone', this.SignupForm.phone)
           this.$axios
-            .post('http://127.0.0.1:8081/register', param)
+            .post(that.getApi('/register'), param)
             .then(function (response) {
               if (response === 'failed') {
                 that.$message({

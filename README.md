@@ -34,26 +34,50 @@ vscode vue 代码格式化插件
 
 ```java
    /**
-     * cors support
-     * @return
+     * 开启跨域
      */
-    @Bean
-    public FilterRegistrationBean corsFilter() {
-        // 注册CORS过滤器
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // 是否支持安全证书
-        config.addAllowedOrigin("*"); // 允许任何域名使用
-        config.addAllowedHeader("*"); // 允许任何头
-        config.addAllowedMethod("*"); // 允许任何方法（post、get等）
-        // 预检请求的有效期，单位为秒。
-        //        config.setMaxAge(3600L);
-
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(0);
-        return bean;
+    public void addCorsMappings(CorsRegistry registry) {
+        // 设置允许跨域的路由
+        registry.addMapping("/**")
+                // 设置允许跨域请求的域名
+                .allowedOriginPatterns("*")
+                // 是否允许证书（cookies）
+                .allowCredentials(true)
+                // 设置允许的方法
+                .allowedMethods("*")
+                // 跨域允许时间
+                .maxAge(3600);
     }
 ```
 
 后期让后端解决。
+
+### VUE AJAX
+
+**配置后端api路径**
+
+main.js中 ```BACK_URL``` 常量，默认是```http://127.0.0.1:8081```
+
+AJAX使用方法（POST）：
+
+```javascript
+this.$axios
+    .post(that.getApi('####'), param) // ####是请求地址，地址不带前缀
+    .then(function (response) {
+		// 成功后调用代码
+	})
+    .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+    })
+```
+
+注意，axios方法中，this指向发生变化，提前使用类似以下语法：
+
+```javascript
+var that = this
+```
+
+将this提取出来，在axios方法中this使用that代替。
+
+类似的，获取请求地址使用```that.getApi()```方法。
