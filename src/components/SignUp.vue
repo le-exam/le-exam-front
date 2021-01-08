@@ -213,7 +213,7 @@ export default {
       this.$router.push('/tenant/dashboard')
     }
     return {
-      activeName: 'signin',
+      activeName: 'signup',
       SigninForm: {
         name: '',
         pwd: '',
@@ -262,7 +262,7 @@ export default {
           param.append('uname', this.SigninForm.name)
           param.append('pwd', this.SigninForm.pwd)
           this.$axios
-            .post('/login', param)
+            .post('http://127.0.0.1:8081/login', param)
             .then(function (response) {
               if (response === 'failed') {
                 that.$message({

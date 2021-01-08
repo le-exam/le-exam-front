@@ -25,10 +25,13 @@
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
-            <el-row :gutter="20" type="flex" justify="end">
+            <el-row :gutter="20" type="flex" justify="end" v-if="nologin">
               <el-button type="primary" @click="SignUp">登录</el-button>
               <el-button type="primary" plain @click="SignIn">注册</el-button>
               <el-button type="success">我是考生</el-button>
+            </el-row>
+            <el-row :gutter="20" type="flex" justify="end" v-else>
+              <el-button type="primary" plain @click="Console" icon="el-icon-data-analysis">控制台</el-button>
             </el-row>
           </div>
         </el-col>
@@ -49,10 +52,15 @@
 export default {
   name: 'Index',
   data () {
+    let nologin = true
+    if (this.$cookieStore.getCookie('uname')) {
+      nologin = false
+    }
     return {
       activeIndex: '1',
       handleSelect: '1',
-      msg: '乐考在线考试系统'
+      msg: '乐考在线考试系统',
+      nologin: nologin
     }
   },
   methods: {
@@ -61,6 +69,9 @@ export default {
     },
     SignIn () {
       this.$router.push({path: '/account/signup'})
+    },
+    Console () {
+      this.$router.push({path: '/tenant/dashboard'})
     }
   }
 }

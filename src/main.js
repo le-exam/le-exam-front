@@ -5,9 +5,17 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import axios from '@/commn/axios'
+import { setCookie, getCookie, delCookie } from '@/commn/cookie'
 
+Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+Vue.prototype.$cookieStore = {
+  setCookie,
+  getCookie,
+  delCookie
+}
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
