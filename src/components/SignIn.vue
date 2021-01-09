@@ -35,7 +35,7 @@
                 <el-checkbox-group v-model="SigninForm.status">
                   <el-checkbox label="记住我" name="status"></el-checkbox>
                 </el-checkbox-group>
-                <el-link type="primary">忘记密码</el-link>
+                <el-link type="primary" @click="ForgetPass">忘记密码</el-link>
               </div>
             </el-form-item>
             <el-form-item size="large" prop="signin">
@@ -331,6 +331,9 @@ export default {
           return false
         }
       })
+    },
+    ForgetPass () {
+      this.$router.push('/account/password/reset')
     }
   }
 }

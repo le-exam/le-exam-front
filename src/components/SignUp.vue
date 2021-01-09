@@ -273,7 +273,7 @@ export default {
               } else if (response === 'success') {
                 // 登录成功
                 that.$cookieStore.setCookie('uname', that.SigninForm.name, 1)
-                that.$router.push('/tenant/dashboard')
+                that.$router.push('/tenant')
               } else {
                 that.$message({
                   message: '登录失败，未知错误。',

@@ -12,8 +12,8 @@
         <div class="le-fgpass">
           <p>通过注册邮箱重设密码</p>
           <el-form
-            :model="emailForm"
-            ref="emailForm"
+            :model="pwdForm"
+            ref="pwdForm"
             label-width="auto"
             class="demo-dynamic"
           >
@@ -30,14 +30,14 @@
               ]"
             >
               <el-input
-                v-model="emailForm.email"
+                v-model="pwdForm.email"
                 placeholder="输入您的登录邮箱"
               ></el-input>
             </el-form-item>
             <el-form-item size="large">
               <el-button
                 type="primary"
-                @click="submit('emailForm')"
+                @click="submit('pwdForm')"
                 icon="el-icon-s-promotion"
                 >提交</el-button
               >
@@ -59,7 +59,7 @@ export default {
   },
   data () {
     return {
-      emailForm: {
+      pwdForm: {
         domains: [
           {
             value: ''
@@ -69,21 +69,25 @@ export default {
       }
     }
   },
+  created () {
+    let emailParams = this.$route.params
+    console.log(emailParams.email)
+  },
   methods: {
-    submit (emailForm) {
-      this.$refs[emailForm].validate(valid => {
+    submit (pwdForm) {
+      this.$refs[pwdForm].validate(valid => {
         if (valid) {
           let that = this
           // 发送请求
           // let param = new URLSearchParams()
-          // param.append('email', this.emailForm.email)
+          // param.append('email', this.pwdForm.email)
           // this.$axios
           //   .post(that.getApi(''), param)
           //   .then(function (response) {
           //     // 发送邮件成功
           that.$router.push({
             name: 'resetPasswordDone',
-            params: { email: that.emailForm.email }
+            params: { email: that.pwdForm.email }
           })
           //   })
           //   .catch(function (error) {
@@ -116,7 +120,8 @@ export default {
 }
 .le-fgpass {
   margin: 0 auto;
-  margin-top: 150px;
-  width: 300px;
+  margin-top: 50px;
+  width: 600px;
+  text-align: center;
 }
 </style>
