@@ -6,7 +6,7 @@
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item index="1" style="width:160px"><b>乐考</b></el-menu-item>
+      <el-menu-item index="1" style="width:145px;"><b>乐考</b></el-menu-item>
       <el-menu-item index="2">控制台</el-menu-item>
       <el-menu-item index="3">试卷</el-menu-item>
       <el-menu-item index="4">考试</el-menu-item>
