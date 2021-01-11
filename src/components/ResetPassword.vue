@@ -74,20 +74,10 @@ export default {
       this.$refs[emailForm].validate(valid => {
         if (valid) {
           let that = this
-          // 发送请求
-          // let param = new URLSearchParams()
-          // param.append('email', this.emailForm.email)
-          // this.$axios
-          //   .post(that.getApi(''), param)
-          //   .then(function (response) {
-          //     // 发送邮件成功
           that.$router.push({
             name: 'resetPasswordDone',
             params: { email: that.emailForm.email }
           })
-          //   })
-          //   .catch(function (error) {
-          //   })
         } else {
           return false
         }

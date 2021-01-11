@@ -10,28 +10,26 @@
           <el-breadcrumb-item><a href="/">忘记密码</a></el-breadcrumb-item>
         </el-breadcrumb>
         <div class="le-fgpass">
-          <p>通过注册邮箱重设密码</p>
           <el-form
             :model="pwdForm"
             ref="pwdForm"
             label-width="auto"
             class="demo-dynamic"
           >
-            <el-form-item
-              prop="email"
-              label="邮箱"
-              :rules="[
-                { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                {
-                  type: 'email',
-                  message: '请输入正确的邮箱地址',
-                  trigger: ['blur', 'change']
-                }
-              ]"
-            >
+            <el-form-item label="密码" prop="pass" size="large">
               <el-input
-                v-model="pwdForm.email"
-                placeholder="输入您的登录邮箱"
+                type="password"
+                v-model="pwdForm.pass"
+                autocomplete="off"
+                placeholder="输入密码"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass" size="large">
+              <el-input
+                type="password"
+                v-model="pwdForm.checkPass"
+                autocomplete="off"
+                placeholder="确认密码"
               ></el-input>
             </el-form-item>
             <el-form-item size="large">
@@ -39,7 +37,7 @@
                 type="primary"
                 @click="submit('pwdForm')"
                 icon="el-icon-s-promotion"
-                >提交</el-button
+                >完成</el-button
               >
             </el-form-item>
           </el-form>
@@ -58,6 +56,15 @@ export default {
     'v-header': header
   },
   data () {
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.pwdForm.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       pwdForm: {
         domains: [
@@ -65,13 +72,22 @@ export default {
             value: ''
           }
         ],
-        email: ''
-      }
+        pass: '',
+        checkPass: ''
+      },
+      rules: {
+        pass: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        ],
+        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+      },
+      email: ''
     }
   },
   created () {
     let emailParams = this.$route.params
-    console.log(emailParams.email)
+    this.email = emailParams.email
   },
   methods: {
     submit (pwdForm) {
@@ -80,13 +96,13 @@ export default {
           let that = this
           // 发送请求
           // let param = new URLSearchParams()
-          // param.append('email', this.pwdForm.email)
+          // param.append('email', this.email)
           // this.$axios
           //   .post(that.getApi(''), param)
           //   .then(function (response) {
           //     // 发送邮件成功
           that.$router.push({
-            name: 'resetPasswordDone',
+            name: 'resetPasswordSuccess',
             params: { email: that.pwdForm.email }
           })
           //   })
@@ -120,8 +136,8 @@ export default {
 }
 .le-fgpass {
   margin: 0 auto;
-  margin-top: 50px;
-  width: 600px;
+  margin-top: 100px;
+  width: 400px;
   text-align: center;
 }
 </style>

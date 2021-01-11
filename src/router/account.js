@@ -5,6 +5,7 @@ import resetPassword from '@/components/resetPassword'
 import resetPasswordDone from '@/components/resetPasswordDone'
 import resetPasswordKey from '@/components/resetPasswordKey'
 import resetPasswordDo from '@/components/resetPasswordDo'
+import agreement from '@/components/Agreement'
 
 let router = [
   {
@@ -61,6 +62,14 @@ let router = [
     component: resetPasswordDo,
     meta: {
       title: '重置密码 | 乐考在线考试系统'
+    }
+  },
+  {
+    path: '/account/agreement',
+    name: 'Agreement',
+    component: agreement,
+    meta: {
+      title: '用户服务协议 | 乐考在线考试系统'
     }
   }
 ]

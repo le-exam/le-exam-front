@@ -116,7 +116,7 @@
               p-id="2808"
             ></path>
           </svg>
-          <p>密码重设链接邮件已发送到您的邮箱,请注意查收并设置密码</p>
+          <p>{{ msg }}</p>
         </div>
       </div>
     </el-main>
@@ -133,6 +133,19 @@ export default {
   components: {
     'v-header': header
   },
+  data () {
+    return {
+      emailContentF:
+        '尊敬的易考用户:<br/>' +
+        '您好！<br/>' +
+        '您在访问易考时进行了重置密码操作，这是一封确认邮件。<br/>' +
+        '您可以通过点击以下链接重置帐户密码:<br/>',
+      emailContentB:
+        '为保障您的帐号安全，请在24小时内点击该链接，您也可以将链接复制到浏览器地址栏访问。<br/>' +
+        '若如果您并未尝试修改密码，请忽略本邮件，由此给您带来的不便请谅解。<br/>',
+      msg: '重置密码邮件发送中。请稍后..'
+    }
+  },
   created () {
     let emailParams = this.$route.params
     let host = window.location.protocol + '//' + window.location.host
@@ -142,7 +155,38 @@ export default {
     }
     let zipData = crypto.jiami(JSON.stringify(emailObj))
     let url = host + '/account/password/reset/key/' + zipData
-    console.log('找回密码地址：' + url)
+    let that = this
+    let param = new URLSearchParams()
+    param.append('mail_from', 'le-exam@redcountry.top')
+    param.append('password', 'Le123456')
+    param.append('mail_to', this.email)
+    param.append('subject', '[乐考] 密码重置')
+    param.append('content', this.emailContentF + url + this.emailContentB)
+    let stindex = 0
+    let originmsg = this.msg
+    let repeatstr = (str, num) => str.repeat(num)
+    let displayst = setInterval(() => {
+      const appendstr = repeatstr('.', stindex % 6)
+      const displaystr = originmsg + appendstr
+      this.msg = displaystr
+      stindex++
+    }, 300)
+    let posturl = 'http://106.13.236.185:9999/mail_sys/send_mail_http.json'
+    this.$axios
+      .post(posturl, param)
+      .then(function (response) {
+        clearInterval(displayst)
+        console.log(response)
+        if (response === 'success') {
+          that.msg = '密码重设链接邮件已发送到您的邮箱,请注意查收并设置密码'
+        } else {
+          that.msg = '重置密码邮件发送失败！请重试。'
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+        that.msg = '重置密码邮件发送失败！请检查网络连接。'
+      })
   },
   methods: {
     getTime: function () {

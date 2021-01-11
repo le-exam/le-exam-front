@@ -117,7 +117,7 @@
               >
             </el-form-item>
             <div style="width: 100%; text-align: center;">
-              <el-link type="primary">用户服务协议</el-link>
+              <el-link type="primary" @click="Agreement">用户服务协议</el-link>
             </div>
           </el-form>
         </el-tab-pane>
@@ -264,13 +264,13 @@ export default {
           this.$axios
             .post(that.getApi('/login'), param)
             .then(function (response) {
-              if (response === 'failed') {
+              if (response === 'longin failed') {
                 that.$message({
                   message: '用户名或密码错误，请重试。',
                   type: 'error'
                 })
                 that.SigninForm.pwd = ''
-              } else if (response === 'success') {
+              } else if (response === 'Successful user login') {
                 // 登录成功
                 that.$cookieStore.setCookie('uname', that.SigninForm.name, 1)
                 that.$router.push('/tenant')
@@ -307,16 +307,21 @@ export default {
           this.$axios
             .post(that.getApi('/register'), param)
             .then(function (response) {
-              if (response === 'failed') {
+              if (response === 'registration failed') {
                 that.$message({
                   message: '注册失败，请重试。',
                   type: 'error'
                 })
-              } else {
+              } else if (response === 'registered successfully') {
                 that.activeName = 'signin'
                 that.$message({
                   message: '注册成功，请登录。',
                   type: 'success'
+                })
+              } else {
+                that.$message({
+                  message: '注册失败。未知错误。',
+                  type: 'error'
                 })
               }
             })
@@ -333,7 +338,10 @@ export default {
       })
     },
     ForgetPass () {
-      this.$router.push('/account/password/reset')
+      this.$router.push({name: 'resetPassword'})
+    },
+    Agreement () {
+      this.$router.push({name: 'Agreement'})
     }
   }
 }
