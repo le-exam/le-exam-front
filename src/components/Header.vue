@@ -65,7 +65,7 @@ export default {
       this.$router.push({ path: '/account/signup' })
     },
     ConsoleThing () {
-      this.$router.push({ path: '/tenant/dashboard' })
+      this.$router.push({ path: '/tenant' })
     }
   }
 }

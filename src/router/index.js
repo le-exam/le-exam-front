@@ -8,6 +8,10 @@ import tenant from './tenant.js'
 import Index from '@/components/Index'
 
 Vue.use(Router)
+const VueRouterPush = Router.prototype.push
+Router.prototype.push = function push (to) {
+  return VueRouterPush.call(this, to).catch(err => err)
+}
 
 export default new Router({
   mode: 'history',
