@@ -264,7 +264,7 @@ export default {
           this.$axios
             .post(that.getApi('/login'), param)
             .then(function (response) {
-              if (response === 'longin failed') {
+              if (response === '') {
                 that.$message({
                   message: '用户名或密码错误，请重试。',
                   type: 'error'
@@ -275,7 +275,15 @@ export default {
                 that.$cookieStore.setCookie('uname', that.SigninForm.name, 1)
                 that.$router.push('/tenant')
               } else {
-                console.log(response)
+                let user = response[0]
+                if (user) {
+                  that.$cookieStore.setCookie('uname', user.uname, 1)
+                  that.$cookieStore.setCookie('name', user.name, 1)
+                  that.$cookieStore.setCookie('email', user.email, 1)
+                  that.$cookieStore.setCookie('uid', user.uid, 1)
+                  that.$cookieStore.setCookie('oid', user.oid, 1)
+                  that.$router.push('/tenant')
+                }
                 that.$message({
                   message: '登录失败，未知错误。',
                   type: 'error'
@@ -339,10 +347,10 @@ export default {
       })
     },
     ForgetPass () {
-      this.$router.push({name: 'resetPassword'})
+      this.$router.push({ name: 'resetPassword' })
     },
     Agreement () {
-      this.$router.push({name: 'Agreement'})
+      this.$router.push({ name: 'Agreement' })
     }
   }
 }

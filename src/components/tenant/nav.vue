@@ -27,7 +27,9 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>管理中心</el-dropdown-item>
-          <el-dropdown-item @click="SignOut">退出</el-dropdown-item>
+          <el-dropdown-item>
+            <div @click="SignOut">退出</div>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -53,9 +55,15 @@ export default {
       activeIndex: '0'
     }
   },
+  created () {
+    if (!this.$cookieStore.getCookie('uname')) {
+      this.$router.push('/')
+    }
+  },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+      return false
     },
     GoKZT () {
       this.$router.push('/tenant')
@@ -79,6 +87,11 @@ export default {
     },
     SignOut () {
       this.$cookieStore.delCookie('uname')
+      this.$cookieStore.delCookie('name')
+      this.$cookieStore.delCookie('email')
+      this.$cookieStore.delCookie('uid')
+      this.$cookieStore.delCookie('oid')
+      this.$router.push('/')
     }
   }
 }
