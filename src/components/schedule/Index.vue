@@ -16,7 +16,7 @@
 </style>
 
 <script>
-import nav from '@/components/nav'
+import nav from '@/components/tenant/nav'
 export default {
   components: {
     'v-nav': nav

@@ -130,7 +130,8 @@ export default {
           usetime: '120分钟',
           score: '59/100'
         }
-      ]
+      ],
+      asideIndex: '2'
     }
   },
   methods: {

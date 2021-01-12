@@ -261,7 +261,8 @@ export default {
           label: '一年考生数据分析'
         }
       ],
-      value: ''
+      value: '',
+      asideIndex: '1'
     }
   },
   components: {

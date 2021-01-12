@@ -103,7 +103,8 @@ export default {
           up: '',
           uptime: ''
         }
-      ]
+      ],
+      asideIndex: '3'
     }
   }
 }
