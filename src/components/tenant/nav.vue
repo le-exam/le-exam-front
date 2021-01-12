@@ -55,6 +55,11 @@ export default {
       activeIndex: '0'
     }
   },
+  created () {
+    if (!this.$cookieStore.getCookie('uname')) {
+      this.$router.push('/')
+    }
+  },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
