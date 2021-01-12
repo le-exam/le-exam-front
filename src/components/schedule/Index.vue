@@ -25,7 +25,6 @@
 
 <script>
 import nav from '@/components/tenant/nav'
-
 export default {
   data () {
     return {}

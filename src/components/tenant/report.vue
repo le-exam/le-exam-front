@@ -145,7 +145,8 @@ export default {
           name: '',
           examses: ''
         }
-      ]
+      ],
+      asideIndex: '4'
     }
   }
 }
