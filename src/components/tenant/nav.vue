@@ -1,49 +1,84 @@
 <template>
-  <div>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-    >
-      <el-menu-item index="1" style="width:145px;"><b>乐考</b></el-menu-item>
-      <el-menu-item index="2">控制台</el-menu-item>
-      <el-menu-item index="3">试卷</el-menu-item>
-      <el-menu-item index="4">考试</el-menu-item>
-      <el-menu-item index="5">报名</el-menu-item>
-      <el-menu-item index="6">题库</el-menu-item>
-      <el-menu-item index="7">组卷</el-menu-item>
-      <el-menu-item index="8"
-        ><a href="" target="_blank" id="b"
-          ><i class="el-icon-question"></i>帮助中心</a
-        ></el-menu-item
+  <header class="head-nav">
+    <div class="head-nav-inner">
+      <div style="width:145px;">乐考</div>
+      <nav>
+        <el-menu
+          :default-active="activeIndex"
+          class="el-menu-demo"
+          mode="horizontal"
+          @select="handleSelect"
+        >
+          <el-menu-item index="1" @click="GoKZT">控制台</el-menu-item>
+          <el-menu-item index="2" @click="GoSJ">试卷</el-menu-item>
+          <el-menu-item index="3" @click="GoKS">考试</el-menu-item>
+          <el-menu-item index="4" @click="GoBM">报名</el-menu-item>
+          <el-menu-item index="5" @click="GoTK">题库</el-menu-item>
+        </el-menu>
+      </nav>
+    </div>
+    <div class="head-nav-inner">
+      <el-link icon="el-icon-question" style="margin-right: 40px;"
+        >帮助中心</el-link
       >
-      <el-submenu index="2" class="y">
-        <template slot="title"><i class="el-icon-user"></i>用户名</template>
-        <el-menu-item index="2-1">管理中心</el-menu-item>
-        <el-menu-item index="2-2">退出</el-menu-item>
-      </el-submenu>
-    </el-menu>
-  </div>
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          用户名<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>管理中心</el-dropdown-item>
+          <el-dropdown-item @click="SignOut">退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </header>
 </template>
+
 <style scoped>
-.y {
-  position: relative;
-  left: 630px;
+.head-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-#b {
-  position: relative;
-  left: 600px;
+.head-nav-inner {
+  display: flex;
+  align-items: center;
 }
 </style>
+
 <script>
 export default {
+  data () {
+    return {
+      activeIndex: '0'
+    }
+  },
   methods: {
-    handleOpen (key, keyPath) {
+    handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+    GoKZT () {
+      this.$router.push('/tenant')
+      this.activeIndex = '1'
+    },
+    GoSJ () {
+      this.$router.push('/content')
+      this.activeIndex = '2'
+    },
+    GoKS () {
+      this.$router.push('/schedule/list/all')
+      this.activeIndex = '3'
+    },
+    GoBM () {
+      this.$router.push('/tenant')
+      this.activeIndex = '4'
+    },
+    GoTK () {
+      this.$router.push('/tenant')
+      this.activeIndex = '5'
+    },
+    SignOut () {
+      this.$cookieStore.delCookie('uname')
     }
   }
 }

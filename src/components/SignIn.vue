@@ -275,6 +275,7 @@ export default {
                 that.$cookieStore.setCookie('uname', that.SigninForm.name, 1)
                 that.$router.push('/tenant')
               } else {
+                console.log(response)
                 that.$message({
                   message: '登录失败，未知错误。',
                   type: 'error'

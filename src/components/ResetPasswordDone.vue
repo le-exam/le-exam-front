@@ -157,10 +157,8 @@ export default {
     let url = host + '/account/password/reset/key/' + zipData
     let that = this
     let param = new URLSearchParams()
-    param.append('mail_from', 'le-exam@redcountry.top')
-    param.append('password', 'Le123456')
-    param.append('mail_to', this.email)
-    param.append('subject', '[乐考] 密码重置')
+    param.append('toUsername', emailParams.email)
+    param.append('title', '[乐考] 密码重置')
     param.append('content', this.emailContentF + url + this.emailContentB)
     let stindex = 0
     let originmsg = this.msg
@@ -171,9 +169,8 @@ export default {
       this.msg = displaystr
       stindex++
     }, 300)
-    let posturl = 'http://106.13.236.185:9999/mail_sys/send_mail_http.json'
     this.$axios
-      .post(posturl, param)
+      .post(that.getApi('/email'), param)
       .then(function (response) {
         clearInterval(displayst)
         console.log(response)
