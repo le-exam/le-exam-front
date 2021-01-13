@@ -283,11 +283,16 @@ export default {
                   that.$cookieStore.setCookie('uid', user.uid, 1)
                   that.$cookieStore.setCookie('oid', user.oid, 1)
                   that.$router.push('/tenant')
+                  that.$message({
+                    message: '登录成功，欢迎你  ' + user.name,
+                    type: 'success'
+                  })
+                } else {
+                  that.$message({
+                    message: '登录失败，未知错误。',
+                    type: 'error'
+                  })
                 }
-                that.$message({
-                  message: '登录失败，未知错误。',
-                  type: 'error'
-                })
               }
             })
             .catch(function (error) {
