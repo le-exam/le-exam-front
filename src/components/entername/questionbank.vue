@@ -35,11 +35,16 @@
             <el-row :gutter="12">
               <el-col :span="24" v-for="(item, key) in question" :key="key">
                 <el-card shadow="hover" class="form-card">
-                  <div @click="examQuestionBank(item.qbid)">
+                  <div @click="examQuestionBank(item.qbid)" class="list">
                     <div class="list-left">
                       <span style="font-size:20px">{{ item.qbname }}</span>
                       <span class="line-bt"></span>
-                      <span>创建于{{ item.createTime }}</span>
+                      <span style="color: #666;font-size: 14px"
+                        >创建于{{ item.createTime }}</span
+                      >
+                      <span style="color: #666;font-size: 14px"
+                        >更新于{{ item.updateTime }}</span
+                      >
                     </div>
                     <div class="list-right">
                       <div>
@@ -77,31 +82,27 @@
   color: #fff;
   border-radius: 30px;
   margin-right: 30px;
+  margin-bottom: 20px;
+}
+.list {
+  display: flex;
+  justify-content: space-between;
 }
 .list-right {
   display: flex;
-  align-items: left;
-  justify-content: space-evenly;
   flex-direction: column;
-  height: 202px;
-  width: 60%;
-  float: right;
 }
 .list-left {
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
   flex-direction: column;
-  height: 202px;
-  width: 20%;
-  float: left;
 }
 .line-bt {
   height: 3px;
   width: 50px;
   background-color: #0195ff;
   display: block;
-  margin-bottom: 30px;
+  margin-top: 5px;
+  margin-bottom: 40px;
 }
 .form-content-head {
   display: flex;
@@ -109,7 +110,6 @@
   justify-content: space-between;
 }
 .form-card {
-  height: 200px;
   width: 100%;
 }
 .form-card-content {
@@ -131,7 +131,7 @@ export default {
     return {
       input2: '',
       activeName: 'newtoold',
-      question:''
+      question: ''
     }
   },
   created () {

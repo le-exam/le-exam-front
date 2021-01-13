@@ -4,18 +4,31 @@
     <el-container>
       <el-aside width="200px"><v-side></v-side></el-aside>
       <el-main>
-        <div class="all" style="width:1260px">
+        <div class="all" style="width: 100%">
           <el-row :gutter="2">
             <el-col :span="8"
-              ><div class="grid-content bg-purple" style="height:300px">
+              ><div class="grid-content bg-purple" style="min-height:300px">
                 <div class="content-header">
-                  <div class="till-pull" style="margin:40px 0 0 0;">
-                    尊敬的山东理工大学用户姜富超，你好，<br />感谢选择我们机构
+                  <div
+                    class="till-pull"
+                    style="margin:40px 0 0 0; padding: 20px"
+                  >
+                    尊敬的
+                    <span style="font-size: 18px; font-weight: 700;">{{
+                      org.oname
+                    }}</span
+                    >用户
+                    <span style="color: blue">{{ uname }}</span>
+                    ，你好,
+                    <br />感谢选择我们机构
                   </div>
-                  <div class="dashboard-photo">ainio</div>
+                  <el-avatar
+                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                  ></el-avatar>
                 </div>
+                <el-divider></el-divider>
                 <div class="tip clearfix">
-                  <span class="pull-right"
+                  <span class="pull-right" style="padding: 20px"
                     >业务合作及支持热线： 182-548-74523(工作日 9:00-17:00)</span
                   >
                 </div>
@@ -25,9 +38,8 @@
               ><div class="grid-content bg-purple" style="height:300px">
                 <div class="content-sty">
                   <div>在线考生统计</div>
-                  <i class="el-icon-s-data" style="font-size:50px"></i
-                  >{{ onlineCount }}
-                  <div>当前</div>
+                  <i class="el-icon-s-data" style="font-size:50px"></i>
+                  <div>当前: {{ onlineCount }}</div>
                 </div>
               </div></el-col
             >
@@ -36,8 +48,7 @@
                 <div class="content-sty">
                   <div>创建考生</div>
                   <i class="el-icon-s-check" style="font-size:50px"></i>
-                  {{ todayCreateCount }}
-                  <div>今日</div>
+                  <div>今日: {{ todayCreateCount }}</div>
                 </div>
               </div></el-col
             >
@@ -46,8 +57,7 @@
                 <div class="content-sty">
                   <div>完成考生</div>
                   <i class="el-icon-success" style="font-size:50px"></i>
-                  {{ todayOverCount }}
-                  <div>今日</div>
+                  <div>今日: {{ todayOverCount }}</div>
                 </div>
               </div></el-col
             >
@@ -56,8 +66,7 @@
                 <div class="content-sty">
                   <div>完成报名</div>
                   <i class="el-icon-s-order" style="font-size:50px"></i>
-                  {{ allOverCount }}
-                  <div>今日</div>
+                  <div>今日: {{ allOverCount }}</div>
                 </div>
               </div></el-col
             >
@@ -269,6 +278,8 @@
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+  border: 1px solid #ebebeb;
+  border-radius: 3px;
 }
 .row-bg {
   padding: 10px 0;
@@ -308,7 +319,7 @@
 }
 
 .box-card {
-  width: 1260px;
+  width: 100%;
   height: 450px;
 }
 .all {
@@ -353,7 +364,9 @@ export default {
       onlineCount: 0,
       todayCreateCount: 0,
       todayOverCount: 0,
-      allOverCount: 0
+      allOverCount: 0,
+      org: [],
+      uname: ''
     }
   },
   components: {
@@ -361,6 +374,7 @@ export default {
     'v-side': side
   },
   created () {
+    this.uname = unescape(this.$cookieStore.getCookie('uname'))
     let oid = this.$cookieStore.getCookie('oid')
     let that = this
     this.$axios
@@ -368,18 +382,10 @@ export default {
       .then(function (response) {
         that.onlineCount = response
       })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
-      })
     this.$axios
-      .get(that.getApi('/examinee/count/today?oid=' + oid + ''))
+      .get(that.getApi('/examinee/count/today?oid=' + oid))
       .then(function (response) {
         that.todayCreateCount = response
-      })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
       })
     this.$axios
       .get(
@@ -390,19 +396,16 @@ export default {
       .then(function (response) {
         that.todayOverCount = response
       })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
-      })
     this.$axios
-      .get(that.getApi('/examinee/count/sum?oid=' + oid + ''))
+      .get(that.getApi('/examinee/count/sum?oid=' + oid))
       .then(function (response) {
         that.allOverCount = response
       })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
-      })
+    let param = new URLSearchParams()
+    param.append('uname', unescape(this.$cookieStore.getCookie('uname')))
+    this.$axios.post(that.getApi('/selectorg'), param).then(function (response) {
+      that.org = response[0]
+    })
   },
   methods: {
     handleOpen (key, keyPath) {

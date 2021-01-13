@@ -43,7 +43,7 @@
               </div>
               <div class="list-content-right">
                 <div class="list-title">题量总计</div>
-                <div class="list-number">{{item.question}}</div>
+                <div class="list-number">{{ item.question }}</div>
                 <el-button type="primary" plain @click="Createlist(item.lsid)"
                   >管理/创建试题</el-button
                 >
@@ -96,7 +96,7 @@ export default {
   },
   data () {
     return {
-      min:''
+      min: ''
     }
   },
   created () {

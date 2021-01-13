@@ -119,18 +119,18 @@ export default {
   created () {
     let tpid = this.$route.params.tpid
     console.log(tpid)
-    let oid = this.$cookieStore.getCookie('oid')
-    let that = this
-    this.$axios
-      .post(that.getApi('/testpaper/bytpids'), [tpid])
-      .then(function (response) {
-        that.detail = response[0]
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
-      })
+    // let oid = this.$cookieStore.getCookie('oid')
+    // let that = this
+    // this.$axios
+    //   .post(that.getApi('/testpaper/bytpids'), [tpid])
+    //   .then(function (response) {
+    //     that.detail = response[0]
+    //     console.log(response)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //     // 失败后调用代码
+    //   })
   },
   methods: {
     detailPath () {
