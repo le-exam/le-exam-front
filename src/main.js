@@ -10,7 +10,7 @@ import { setCookie, getCookie, delCookie } from '@/commn/cookie'
 
 // 定义常量
 // api访问路径
-let BACK_URL = 'http://127.0.0.1:8081'
+let BACK_URL = 'http://127.0.0.1:8088'
 
 Vue.prototype.$axios = axios
 Vue.use(ElementUI)
