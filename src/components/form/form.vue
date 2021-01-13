@@ -39,19 +39,19 @@
                     class="form-card-content"
                     @click="ClickTestPaper(item.tpid)"
                   >
-                    <b style="font-size:16px">试卷示例</b>
+                    <b style="font-size:16px">{{ item.tpname }}</b>
                     <p style="font-size:14px;color: #88949b">
-                      swjhdbwauibfiwaukbf
+                      {{ item.tpdesc }}
                     </p>
                     <div class="form-content-head">
                       <p class="el-icon-refresh" style="font-size:14px">
-                        2121-1-10
+                        {{ item.createTime }}
                       </p>
                       <p class="el-icon-time" style="font-size:14px">
-                        限时60.0分钟
+                        {{ item.atLeastTime }}
                       </p>
                       <p class="el-icon-s-order" style="font-size:14px">
-                        满分100分
+                        满分{{ item.fullMarks }}分
                       </p>
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default {
     return {
       input2: '',
       activeName: 'newtoold',
-      list: [1, 2, 3, 4, 5, 6]
+      list: []
     }
   },
   created () {
@@ -104,6 +104,7 @@ export default {
       .get(that.getApi('/testpaper/byoid?oid=' + oid + ''))
       .then(function (response) {
         console.log(response)
+        that.list = response
       })
       .catch(function (error) {
         console.log(error)

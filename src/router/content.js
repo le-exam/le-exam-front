@@ -14,7 +14,7 @@ let router = [
     component: form
   },
   {
-    path: '/content/detail/:qbid',
+    path: '/content/detail/:tpid',
     name: 'detail',
     component: detail
   },
