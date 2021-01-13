@@ -3,16 +3,14 @@
     <div class="banner">
       <div class="inner">
         <div class="session-name">
-          <p>1.4 test</p>
+          <p>{{ exam.ename }}</p>
         </div>
         <div class="time-wrapper">
           <div class="login-time">
             <span>考试时间: </span>
           </div>
           <div class="line"></div>
-          <div class="time">
-            2021/01/04 09:11 - 2021/01/30 09:11
-          </div>
+          <div class="time">{{ exam.startTime }} - {{ exam.endTime }}</div>
         </div>
       </div>
     </div>
@@ -24,10 +22,12 @@
         style="width: 60%"
       >
       </el-input>
-      <el-button type="success" style="width: 10%; height: 40px">登录</el-button>
+      <el-button type="success" style="width: 10%; height: 40px" @click="Login"
+        >登录</el-button
+      >
     </div>
     <div class="welcomeMsg">
-      你好
+      {{ exam.welcomeMsg }}
     </div>
   </div>
 </template>
@@ -94,7 +94,8 @@
   z-index: 150;
 }
 .welcomeMsg {
-  margin: 100px 0 0 150px;
+  margin: 100px auto;
+  width: 60%;
 }
 </style>
 
@@ -102,7 +103,43 @@
 export default {
   data () {
     return {
-      loginText: ''
+      loginText: '',
+      eid: 0,
+      exam: [],
+      ee: []
+    }
+  },
+  created () {
+    let eid = this.$route.params.eid
+    if (eid === undefined) {
+      this.$message({
+        message: '考试地址出错，请重试。',
+        type: 'error'
+      })
+      return false
+    } else {
+      let that = this
+      this.$axios.get(that.getApi('/exam/selectbyeid?eid=' + eid)).then(res => {
+        that.exam = res
+      })
+      that.$axios
+        .get(that.getApi('/examinee/eid/page?eid=' + that.eid))
+        .then(res => {
+          console.log(res)
+          that.ee = res
+        })
+    }
+  },
+  methods: {
+    Login () {
+      if (this.loginText === '') {
+        this.$message({
+          message: '请输入准考证号。',
+          type: 'error'
+        })
+        return false
+      } else {
+      }
     }
   }
 }

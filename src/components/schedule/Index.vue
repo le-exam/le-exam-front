@@ -53,8 +53,8 @@
                     </div>
                     <div class="form-content-head">
                       <p style="font-size:14px;color: #88949b">
-                        {{ getTime(exam.startTime) }} -
-                        {{ getTime(exam.endTime) }}
+                        {{ exam.startTime }} -
+                        {{ exam.endTime }}
                       </p>
                       <div class="form-setting form-content-head"></div>
                     </div>
@@ -268,14 +268,16 @@ export default {
     },
     getStatus (startTime, endTime, op) {
       let timestamp = Date.parse(new Date())
+      let st = new Date(Date.parse(startTime)).getTime()
+      let et = new Date(Date.parse(endTime)).getTime()
       let res = {
         status: '',
         class: ''
       }
-      if (timestamp < startTime) {
+      if (timestamp < st) {
         res['status'] = '未开考'
         res['class'] = 'status-wkk'
-      } else if (timestamp > endTime) {
+      } else if (timestamp > et) {
         res['status'] = '已过期'
         res['class'] = 'status-ygq'
       } else {

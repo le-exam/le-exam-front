@@ -225,31 +225,31 @@
             </el-form>
           </div>
           <div class="main" v-if="active === 4">
-            <h3 style="color: #409EFF">11111111</h3>
+            <h3 style="color: #409EFF">{{ data.ename }}</h3>
             <div class="flex-row">
               <h4>登录时间段：</h4>
-              2021/01/12 00:00 - 2021/01/21 23:43
+              {{ data.startTime }} - {{ data.endTime }}
             </div>
             <div class="flex-row">
               <h4>选择试卷：</h4>
-              范德萨额为我
+              {{ data.testPaper }}
             </div>
             <div class="flex-row">
               <h4>个人信息：</h4>
               <span
                 class="exam-do"
-                v-for="(item, key) in infoData"
+                v-for="(item, key) in infoJson"
                 :key="key"
-                >{{ item.label }}</span
+                >{{ item }}</span
               >
             </div>
             <div class="flex-row">
               <h4>考试配置：</h4>
               <span
                 class="exam-do"
-                v-for="(item, key) in infoData"
+                v-for="(item, key) in examSetting"
                 :key="key"
-                >{{ item.label }}</span
+                >{{ item }}</span
               >
             </div>
             <el-divider></el-divider>
@@ -357,7 +357,10 @@ export default {
         e_locked_exam: 0,
         e_locked_exam_n: 0,
         e_view_results: 0
-      }
+      },
+      data: '',
+      infoJson: [],
+      examSetting: []
     }
   },
   components: {
@@ -455,6 +458,7 @@ export default {
             }
           }
         }
+        this.infoJson = infoJson
         this.infoList = JSON.stringify(infoJson)
         this.next()
       }
@@ -486,18 +490,35 @@ export default {
           this.fourthForm.e_locked_exam === true
             ? Number.parseInt(this.fourthForm.e_locked_exam_n)
             : 0,
-        eViewResults: this.fourthForm.e_view_results === true ? 1 : 0
+        eViewResults: this.fourthForm.e_view_results === true ? 1 : 0,
+        oid: this.$cookieStore.getCookie('oid')
       }
+      if (data['eLockedExam'] !== 0) {
+        this.examSetting.push('锁定考试：' + data['eLockedExam'] + '次')
+      }
+      if (data['eOmmitment'] !== 0) {
+        this.examSetting.push('考试承诺书')
+      }
+      if (data['ePracticeMode'] !== 0) {
+        this.examSetting.push('练习模式')
+      }
+      if (data['eSignUp'] !== 0) {
+        this.examSetting.push('即报即考')
+      }
+      if (data['eViewResults'] !== 0) {
+        this.examSetting.push('查看成绩')
+      }
+      this.data = data
       let that = this
       this.$axios
         .post(that.getApi('/exam/insert'), data)
         .then(function (response) {
           console.log(response)
-          this.$message({
-            message: '新增考试 ' + that.firstForm.ename + ' 成功！',
-            type: 'success'
-          })
         })
+      that.$message({
+        message: '新增考试 ' + that.firstForm.ename + ' 成功！',
+        type: 'success'
+      })
       this.next()
     },
     FinishCreate () {

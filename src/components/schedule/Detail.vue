@@ -85,7 +85,9 @@
               <div>
                 <h4 class="el-icon-s-opportunity">考试地址</h4>
                 <div>
-                  <el-link target="_blank">{{ exam.url }}</el-link>
+                  <el-link target="_blank">{{
+                    host + '/exam/' + exam.eid + '/login'
+                  }}</el-link>
                 </div>
               </div>
             </div>
@@ -121,7 +123,10 @@
                   content="导出考生明细"
                   placement="top"
                 >
-                  <i class="el-icon-download exam-do-icon"></i>
+                  <i
+                    @click="ExportExcel"
+                    class="el-icon-download exam-do-icon"
+                  ></i>
                 </el-tooltip>
                 <el-tooltip
                   class="item"
@@ -220,7 +225,8 @@ export default {
     return {
       exam: '',
       eeData: [],
-      searchInput: ''
+      searchInput: '',
+      host: window.location.protocol + '//' + window.location.host
     }
   },
   components: {
@@ -465,6 +471,26 @@ export default {
           }
           that.eeData = res
         })
+    },
+    ExportExcel () {
+      let that = this
+      that.$axios.post(that.getApi('/excel/export'), [1, 2, 3]).then(res => {
+        console.log(res)
+        const content = res
+        const blob = new Blob([content], { type: 'application/octet-stream' })
+        if ('download' in document.createElement('a')) {
+          const link = document.createElement('a')
+          link.download = '考生数据.xls'
+          link.style.display = 'none'
+          link.href = URL.createObjectURL(blob)
+          document.body.appendChild(link)
+          link.click()
+          URL.revokeObjectURL(link.href)
+          document.body.removeChild(link)
+        } else {
+          navigator.msSaveBlob(blob)
+        }
+      })
     }
   }
 }

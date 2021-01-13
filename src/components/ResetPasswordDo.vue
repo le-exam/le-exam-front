@@ -87,6 +87,13 @@ export default {
   },
   created () {
     let emailParams = this.$route.params
+    if (emailParams.email === undefined) {
+      this.$message({
+        message: '无效操作。',
+        type: 'error'
+      })
+      this.$router.push('/account/signin')
+    }
     this.email = emailParams.email
   },
   methods: {
@@ -94,20 +101,31 @@ export default {
       this.$refs[pwdForm].validate(valid => {
         if (valid) {
           let that = this
-          // 发送请求
-          // let param = new URLSearchParams()
-          // param.append('email', this.email)
-          // this.$axios
-          //   .post(that.getApi(''), param)
-          //   .then(function (response) {
-          //     // 发送邮件成功
-          that.$router.push({
-            name: 'resetPasswordSuccess',
-            params: { email: that.pwdForm.email }
-          })
-          //   })
-          //   .catch(function (error) {
-          //   })
+          let param = new URLSearchParams()
+          param.append('email', this.email)
+          this.$axios
+            .post(that.getApi('/selectUidByEmail'), param)
+            .then(function (response) {
+              let param2 = new URLSearchParams()
+              param2.append('uid', response)
+              param2.append('new_pwd', that.pwdForm.pass)
+              that.$axios
+                .post(that.getApi('/updatepwdbyuid'), param2)
+                .then(function (response) {
+                  if (response === 'Change the success') {
+                    that.$message({
+                      message: '修改成功。',
+                      type: 'success'
+                    })
+                    that.$router.push('/account/signin')
+                  } else {
+                    that.$message({
+                      message: '修改失败。',
+                      type: 'error'
+                    })
+                  }
+                })
+            })
         } else {
           return false
         }
