@@ -23,7 +23,7 @@
       >
       <el-dropdown>
         <span class="el-dropdown-link">
-          用户名<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>管理中心</el-dropdown-item>
@@ -52,12 +52,15 @@
 export default {
   data () {
     return {
-      activeIndex: '0'
+      activeIndex: '0',
+      name: ''
     }
   },
   created () {
-    if (!this.$cookieStore.getCookie('uname')) {
+    if (!this.$cookieStore.getCookie('name')) {
       this.$router.push('/')
+    } else {
+      this.name = unescape(this.$cookieStore.getCookie('name'))
     }
   },
   methods: {
@@ -91,7 +94,35 @@ export default {
       this.$cookieStore.delCookie('email')
       this.$cookieStore.delCookie('uid')
       this.$cookieStore.delCookie('oid')
+      var keys = document.cookie.match(/[^ =;]+(?==)/g)
+      if (keys) {
+        for (var i = keys.length; i--;) {
+          document.cookie =
+            keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString() // 清除当前域名下的,例如：m.ratingdog.cn
+          document.cookie =
+            keys[i] +
+            '=0;path=/;domain=' +
+            document.domain +
+            ';expires=' +
+            new Date(0).toUTCString() // 清除当前域名下的，例如 .m.ratingdog.cn
+          document.cookie =
+            keys[i] +
+            '=0;path=/;domain=ratingdog.cn;expires=' +
+            new Date(0).toUTCString() // 清除一级域名下的或指定的，例如 .ratingdog.cn
+        }
+      }
       this.$router.push('/')
+      if (!this.$cookieStore.getCookie('name')) {
+        this.$message({
+          message: '退出登录成功。',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: '退出登录失败，请退出浏览器退出系统。',
+          type: 'error'
+        })
+      }
     }
   }
 }
