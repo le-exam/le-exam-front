@@ -11,7 +11,7 @@
         </el-breadcrumb>
         <div class="form-detail-all" style="margin: 40px 0 0 0;">
           <div class="form-detail-head">
-            <b style="font-size:20px">试卷示例</b>
+            <b style="font-size:20px">{{ detail.tpname }}</b>
             <el-button type="text" @click="alter"
               ><p class="el-icon-edit" title="修改"></p
             ></el-button>
@@ -38,21 +38,13 @@
         </div>
         <div class="form-detail-all">
           <div>
-            <span style="font-size:14px">更新于2021-1-11</span>
-            <span style="font-size:14px">复制于2021-1-10</span>
-            <el-popover
-              placement="top-start"
-              title="试卷描述"
-              width="200"
-              trigger="hover"
-              content="这是一段试卷描述。"
-            >
-              <el-button slot="reference">试卷描述</el-button>
-            </el-popover>
+            <span style="font-size:14px">更新于{{ detail.createTime }}</span>
+            <span style="font-size:14px">复制于</span>
+            <el-button slot="reference">{{ detail.notesTitle }}</el-button>
             <el-popover placement="top" width="160" v-model="visible">
               <p>还没有考试应用此试卷</p>
               <div style="text-align: right; margin: 0">
-                <el-button type="primary" size="mini" @click="visible = false"
+                <el-button type="primary" size="mini" @click="detailPath"
                   >马上创建考试</el-button
                 >
               </div>
@@ -60,7 +52,7 @@
             </el-popover>
           </div>
           <div class="form-detail-all">
-            <p>交卷时间限制XX分钟（已设置）</p>
+            <p>交卷时间限制{{ detail.atLeastTime }}分钟（已设置）</p>
             <el-button type="text" @click="edit"
               ><p class="el-icon-edit" title="编辑"></p
             ></el-button>
@@ -71,10 +63,7 @@
             <b style="font-size:20px;">公务员考试行测</b>
             <el-collapse-item name="1">
               <div>
-                与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-              </div>
-              <div>
-                在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
+                {{ detail.notesBody }}
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -124,10 +113,29 @@ export default {
   },
   data () {
     return {
-      visible: false
+      detail: ''
     }
   },
+  created () {
+    let tpid = this.$route.params.tpid
+    console.log(tpid)
+    let oid = this.$cookieStore.getCookie('oid')
+    let that = this
+    this.$axios
+      .post(that.getApi('/testpaper/bytpids'), [tpid])
+      .then(function (response) {
+        that.detail = response[0]
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+      })
+  },
   methods: {
+    detailPath () {
+      this.$router.push('/schedule/create')
+    },
     edit () {
       this.$prompt('试卷名称', '编辑信息', {
         confirmButtonText: '确定',

@@ -33,24 +33,24 @@
           </div>
           <div id="formid">
             <el-row :gutter="12">
-              <el-col :span="24" v-for="(item, key) in list" :key="key">
+              <el-col :span="24" v-for="(item, key) in question" :key="key">
                 <el-card shadow="hover" class="form-card">
-                  <div @click="examQuestionBank(item.lsid)">
+                  <div @click="examQuestionBank(item.qbid)">
                     <div class="list-left">
-                      <span style="font-size:20px">题库名称</span>
+                      <span style="font-size:20px">{{ item.qbname }}</span>
                       <span class="line-bt"></span>
-                      <span>创建于2121/01/07 17:00</span>
+                      <span>创建于{{ item.createTime }}</span>
                     </div>
                     <div class="list-right">
                       <div>
-                        <span class="tag">题量</span>
-                        <b>总计X</b>
+                        <span class="tag">总数</span>
+                        <b>总计{{ item.question }}</b>
                       </div>
                       <div>
                         <span class="tag">难度</span>
-                        <b>难：x% | </b>
-                        <b>中：x% | </b>
-                        <b>易：x%</b>
+                        <b>难：0% | </b>
+                        <b>中：0% | </b>
+                        <b>易：0%</b>
                       </div>
                       <div>
                         <span class="tag">分类</span>
@@ -131,8 +131,24 @@ export default {
     return {
       input2: '',
       activeName: 'newtoold',
-      list: [1, 2, 3, 4, 5, 6]
+      question:''
     }
+  },
+  created () {
+    let oid = this.$cookieStore.getCookie('oid')
+    let that = this
+    let param = new URLSearchParams()
+    param.append('oid', oid)
+    this.$axios
+      .post(that.getApi('/quesbank'), param)
+      .then(function (response) {
+        that.question = response
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+      })
   },
   methods: {
     examQuestionBank: function (lsid) {

@@ -16,7 +16,7 @@
           <el-container>
             <el-header
               ><div class="man-content-top">
-                <b style="font-size:20px">题库名</b>
+                <b style="font-size:20px">1111</b>
                 <el-button type="primary" plain>创建试题</el-button>
               </div>
               <div>
@@ -113,8 +113,25 @@ export default {
   },
   data () {
     return {
-      fileList: []
+      fileList: [],
+      man: ''
     }
+  },
+  created () {
+    let oid = this.$cookieStore.getCookie('oid')
+    let that = this
+    let param = new URLSearchParams()
+    param.append('oid', oid)
+    this.$axios
+      .post(that.getApi('/quesbank'), param)
+      .then(function (response) {
+        that.man = response
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+      })
   },
   methods: {
     ManAdd () {

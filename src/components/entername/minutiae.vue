@@ -11,11 +11,11 @@
             <el-breadcrumb-item>题库名</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
-        <div style="margin:40px 0 0 0;" v-for="(item, key) in list" :key="key">
+        <div style="margin:40px 0 0 0;" v-for="(item, key) in min" :key="key">
           <el-card class="box-card">
             <div class="list-content">
               <div>
-                <b style="font-size:20px">题库名</b>
+                <b style="font-size:20px">{{ item.qbname }}</b>
                 <el-button
                   type="text"
                   @click="ListEdit"
@@ -43,7 +43,7 @@
               </div>
               <div class="list-content-right">
                 <div class="list-title">题量总计</div>
-                <div class="list-number">0</div>
+                <div class="list-number">{{item.question}}</div>
                 <el-button type="primary" plain @click="Createlist(item.lsid)"
                   >管理/创建试题</el-button
                 >
@@ -96,8 +96,24 @@ export default {
   },
   data () {
     return {
-      list: [1, 2, 3, 4, 5, 6]
+      min:''
     }
+  },
+  created () {
+    let oid = this.$cookieStore.getCookie('oid')
+    let that = this
+    let param = new URLSearchParams()
+    param.append('oid', oid)
+    this.$axios
+      .post(that.getApi('/quesbank'), param)
+      .then(function (response) {
+        that.min = response
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+      })
   },
   methods: {
     Createlist: function (lsid) {
