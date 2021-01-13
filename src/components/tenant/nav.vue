@@ -26,7 +26,9 @@
           {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>管理中心</el-dropdown-item>
+          <el-dropdown-item>
+            <div @click="Info">管理中心</div>
+            </el-dropdown-item>
           <el-dropdown-item>
             <div @click="SignOut">退出</div>
           </el-dropdown-item>
@@ -87,6 +89,9 @@ export default {
     GoTK () {
       this.$router.push('/content/form/list')
       this.activeIndex = '5'
+    },
+    Info () {
+      this.$router.push('/tenant/info/')
     },
     SignOut () {
       this.$cookieStore.delCookie('uname')
