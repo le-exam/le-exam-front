@@ -61,12 +61,26 @@
           </div>
           <div class="form-detail-all">
             <p>交卷时间限制XX分钟（已设置）</p>
-            <el-button type="text" @click="alter"
-              ><p class="el-icon-edit" title="修改"></p
+            <el-button type="text" @click="edit"
+              ><p class="el-icon-edit" title="编辑"></p
             ></el-button>
           </div>
-        </div></div
-    ></el-main>
+        </div>
+        <div style="margin: 40px 0 0 0;">
+          <el-collapse>
+            <b style="font-size:20px;">公务员考试行测</b>
+            <el-collapse-item name="1">
+              <div>
+                与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
+              </div>
+              <div>
+                在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </div></el-main
+    >
   </el-container>
 </template>
 <style scoped>
@@ -114,8 +128,26 @@ export default {
     }
   },
   methods: {
+    edit () {
+      this.$prompt('试卷名称', '编辑信息', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
+        .then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消修改'
+          })
+        })
+    },
     alter () {
-      this.$prompt('试卷名称', '提示', {
+      this.$prompt('试卷名称', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       })
@@ -133,7 +165,7 @@ export default {
         })
     },
     AlterDetail () {
-      this.$prompt('试卷描述', '提示', {
+      this.$prompt('试卷描述', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       })
@@ -151,7 +183,7 @@ export default {
         })
     },
     del () {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -170,7 +202,7 @@ export default {
         })
     },
     copy () {
-      this.$confirm('此操作将复制一份试卷, 是否继续?', '提示', {
+      this.$confirm('此操作将复制一份试卷, 是否继续?', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -189,7 +221,7 @@ export default {
         })
     },
     share () {
-      this.$confirm('确定要分享给你的朋友吗?', '提示', {
+      this.$confirm('确定要分享给你的朋友吗?', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -208,7 +240,7 @@ export default {
         })
     },
     conver () {
-      this.$confirm('此操作将转换为默认试卷样例, 是否继续?', '提示', {
+      this.$confirm('此操作将转换为默认试卷样例, 是否继续?', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

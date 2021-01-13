@@ -14,16 +14,7 @@
             remote
             reserve-keyword
             placeholder="姓名/手机号"
-            :remote-method="remoteMethod"
-            :loading="loading"
           >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
           </el-select>
         </div>
         <br />
@@ -66,11 +57,11 @@
             </el-table-column>
             <el-table-column prop="phone" label="手机号" width="256">
             </el-table-column>
-            <el-table-column prop="upname" label="报名名称" width="256">
+            <el-table-column prop="sname" label="报名名称" width="256">
             </el-table-column>
             <el-table-column prop="up" label="报名科目" width="256">
             </el-table-column>
-            <el-table-column prop="uptime" label="报名时间" width="256">
+            <el-table-column prop="startTime" label="报名时间" width="256">
             </el-table-column>
           </el-table>
         </div>
@@ -95,17 +86,26 @@ export default {
       },
       value1: '',
       value2: '',
-      tableData: [
-        {
-          name: '',
-          phone: '',
-          upname: '',
-          up: '',
-          uptime: ''
-        }
-      ],
+      value: '',
+      tableData: [],
       asideIndex: '3'
     }
+  },
+  created () {
+    let oid = this.$cookieStore.getCookie('oid')
+    let that = this
+    let param = new URLSearchParams()
+    param.append('oid', oid)
+    this.$axios
+      .post(that.getApi('/selectsignup'), param)
+      .then(function (response) {
+        console.log(response)
+        that.tableData = response
+      })
+      .catch(function (error) {
+        console.log(error)
+        // 失败后调用代码
+      })
   }
 }
 </script>

@@ -82,7 +82,7 @@ export default {
       this.activeIndex = '4'
     },
     GoTK () {
-      this.$router.push('/tenant')
+      this.$router.push('/content/form/list')
       this.activeIndex = '5'
     },
     SignOut () {

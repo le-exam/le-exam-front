@@ -16,7 +16,7 @@
             </el-tabs>
             <div class="form-content-head">
               <el-input
-                placeholder="试卷名称"
+                placeholder="题库名称"
                 prefix-icon="el-icon-search"
                 v-model="input2"
                 style="width: 150px"
@@ -27,32 +27,35 @@
                 plain
                 @click="CreatePaper"
                 style="margin-left:20px"
-                >新建试卷</el-button
+                >新建题库</el-button
               >
             </div>
           </div>
           <div id="formid">
             <el-row :gutter="12">
-              <el-col :span="12" v-for="(item, key) in list" :key="key">
+              <el-col :span="24" v-for="(item, key) in list" :key="key">
                 <el-card shadow="hover" class="form-card">
-                  <div
-                    class="form-card-content"
-                    @click="ClickTestPaper(item.tpid)"
-                  >
-                    <b style="font-size:16px">试卷示例</b>
-                    <p style="font-size:14px;color: #88949b">
-                      swjhdbwauibfiwaukbf
-                    </p>
-                    <div class="form-content-head">
-                      <p class="el-icon-refresh" style="font-size:14px">
-                        2121-1-10
-                      </p>
-                      <p class="el-icon-time" style="font-size:14px">
-                        限时60.0分钟
-                      </p>
-                      <p class="el-icon-s-order" style="font-size:14px">
-                        满分100分
-                      </p>
+                  <div @click="examQuestionBank(item.lsid)">
+                    <div class="list-left">
+                      <span style="font-size:20px">题库名称</span>
+                      <span class="line-bt"></span>
+                      <span>创建于2121/01/07 17:00</span>
+                    </div>
+                    <div class="list-right">
+                      <div>
+                        <span class="tag">题量</span>
+                        <b>总计X</b>
+                      </div>
+                      <div>
+                        <span class="tag">难度</span>
+                        <b>难：x% | </b>
+                        <b>中：x% | </b>
+                        <b>易：x%</b>
+                      </div>
+                      <div>
+                        <span class="tag">分类</span>
+                        <b>默认分类</b>
+                      </div>
                     </div>
                   </div>
                 </el-card>
@@ -65,15 +68,49 @@
   </el-container>
 </template>
 <style scoped>
+.tag {
+  width: 90px;
+  text-align: center;
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: #0195ff;
+  color: #fff;
+  border-radius: 30px;
+  margin-right: 30px;
+}
+.list-right {
+  display: flex;
+  align-items: left;
+  justify-content: space-evenly;
+  flex-direction: column;
+  height: 202px;
+  width: 60%;
+  float: right;
+}
+.list-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  height: 202px;
+  width: 20%;
+  float: left;
+}
+.line-bt {
+  height: 3px;
+  width: 50px;
+  background-color: #0195ff;
+  display: block;
+  margin-bottom: 30px;
+}
 .form-content-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .form-card {
-  background: url('https://cdn.eztest.org/static/img/bg-paper-list.png') 20px
-    50% no-repeat;
-  /* height: 198px; */
+  height: 200px;
+  width: 100%;
 }
 .form-card-content {
   padding-left: 40px;
@@ -97,25 +134,12 @@ export default {
       list: [1, 2, 3, 4, 5, 6]
     }
   },
-  created () {
-    let oid = this.$cookieStore.getCookie('oid')
-    let that = this
-    this.$axios
-      .get(that.getApi('/testpaper/byoid?oid=' + oid + ''))
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-        // 失败后调用代码
-      })
-  },
   methods: {
-    ClickTestPaper: function (tpid) {
-      this.$router.push('/content/detail/' + tpid)
+    examQuestionBank: function (lsid) {
+      this.$router.push('/content/form/list/particulars/' + lsid)
     },
     CreatePaper () {
-      this.$prompt('试卷名称', '提示', {
+      this.$prompt('题库名称', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       })
