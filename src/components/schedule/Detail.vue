@@ -476,20 +476,24 @@ export default {
       let that = this
       that.$axios.post(that.getApi('/excel/export'), [1, 2, 3]).then(res => {
         console.log(res)
-        const content = res
-        const blob = new Blob([content], { type: 'application/octet-stream' })
-        if ('download' in document.createElement('a')) {
-          const link = document.createElement('a')
-          link.download = '考生数据.xls'
-          link.style.display = 'none'
-          link.href = URL.createObjectURL(blob)
-          document.body.appendChild(link)
-          link.click()
-          URL.revokeObjectURL(link.href)
-          document.body.removeChild(link)
-        } else {
-          navigator.msSaveBlob(blob)
-        }
+        let link = document.createElement('a')
+        link.href = 'http://localhost:8088/' + res
+        link.click()
+
+        // const content = res
+        // const blob = new Blob([content], { type: 'application/octet-stream' })
+        // if ('download' in document.createElement('a')) {
+        //   const link = document.createElement('a')
+        //   link.download = '考生数据.xls'
+        //   link.style.display = 'none'
+        //   link.href = URL.createObjectURL(blob)
+        //   document.body.appendChild(link)
+        //   link.click()
+        //   URL.revokeObjectURL(link.href)
+        //   document.body.removeChild(link)
+        // } else {
+        //   navigator.msSaveBlob(blob)
+        // }
       })
     }
   }
