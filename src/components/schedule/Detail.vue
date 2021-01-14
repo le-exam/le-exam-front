@@ -89,6 +89,12 @@
                     host + '/exam/' + exam.eid + '/login'
                   }}</el-link>
                 </div>
+                <h4 class="el-icon-s-opportunity">视频监考地址</h4>
+                <div>
+                  <el-link target="_blank">{{
+                    'https://lab.redcountry.top/exam'
+                  }}</el-link>
+                </div>
               </div>
             </div>
           </div>
